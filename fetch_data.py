@@ -13,6 +13,9 @@ def fetch_mnist():
     test_images = test_images.astype('float32')
     test_images = test_images / 255 # normalising pixel values
 
+    train_images = np.reshape(train_images, (train_images.shape[0], train_images.shape[1] * train_images.shape[2], 1)) # FROM: (6000, 28, 28), TO: (6000, 28 * 28, 1)
+    test_images = np.reshape(test_images, (test_images.shape[0], test_images.shape[1] * test_images.shape[2], 1)) # FROM: (6000, 28, 28), TO: (6000, 28 * 28, 1)
+
     # One hot encoding the training label data
     train_labels = np.eye(10)[train_labels]
 
