@@ -11,3 +11,9 @@ class NeuralNetwork():
 
         self.w_h2_o = np.random.uniform(-0.5, 0.5, (10, 128)) # third layer
         self.w_h2_o = np.random.uniform(-0.5, 0.5, (10, 1))
+
+    def ReLU(self, inp, derive=False):
+        if derive:
+            return inp > 0 
+        
+        return np.maximum(0, inp)
