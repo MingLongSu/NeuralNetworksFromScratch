@@ -1,9 +1,14 @@
 from nn import NeuralNetwork
+from fetch_data import fetch_mnist
 import numpy as np
 
 # Used for testing newly designed components of the neural network
 
+(images, labels), (images_2, labels_2) = fetch_mnist()
+img = images[0]
+
 nn = NeuralNetwork()
 
-b_i_h1 = np.random.uniform(-0.5, 0.5, (10, 1))
-print(nn.ReLU(b_i_h1))
+results = nn.forward_propogate(img)
+print(np.argmax(results))
+print(results)
