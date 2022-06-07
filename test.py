@@ -9,7 +9,6 @@ img = images[0]
 lbl = labels[0]
 
 nn = NeuralNetwork()
-
-results = nn.forward_propogate(img)
-update = nn.backward_propogation(results, lbl, 0.01, img)
-print(update['update_b_h2_o'])
+print(nn.b_h2_o)
+nn.train(lr=0.01, epochs=10)
+print(nn.b_h2_o)
