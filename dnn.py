@@ -91,19 +91,21 @@ class NeuralNetwork():
         self.b_h2_o = updates['update_b_h2_o']
 
     def train(self, lr, epochs=1):
+        # init number of correct predictions
+        correct = 0
+
         for epoch in range(epochs):
             for image, label in zip(self.train_images, self.train_labels):
                 fp_results = self.forward_propogate(image)
                 updates = self.backward_propogation(fp_results=fp_results, train_label=label, lr=lr, image=image)
                 self.update_params(updates=updates)
             
-            
-            #print(f"Epoch { epoch + 1 } / { epochs }, Accuracy: ")
+                if (np.argmax(fp_results['result_h2_o']) == np.argmax(label)):
+                    correct = correct + 1
 
+            # status on accuracy
+            print(f"Epoch { epoch + 1 } / { epochs }, Accuracy: { correct / self.train_images.shape[0] * 100 }%")
+            correct = 0
 
-'''
 nn = NeuralNetwork()
-print(nn.b_h2_o)
 nn.train(lr=0.01, epochs=10)
-print(nn.b_h2_o)
-'''
