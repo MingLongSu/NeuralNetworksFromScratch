@@ -49,17 +49,24 @@ class NeuralNetwork():
     def backward_propogation(self, fp_results, train_label, lr, image):
         error_1 = (2 / len(fp_results['result_h2_o'])) * (fp_results['result_h2_o'] - train_label) # SHAPE: (10, 1)
         update_w_h2_o = self.w_h2_o - lr * error_1 @ np.transpose(fp_results['result_h1_h2']) # to update the weights of w_h2_o, SHAPE: (10, 128)
+        update_b_h2_o = self.b_h2_o - lr * error_1 # to update the biases of b_h2_o, SHAPE: (10, 1)
 
         error_2 = np.transpose(self.w_h2_o) @ error_1 * self.ReLU(fp_results['pre_result_h1_h2'], derive=True) # SHAPE: (128, 1)
         update_w_h1_h2 = self.w_h1_h2 - lr * error_2 @ np.transpose(fp_results['result_i_h1']) # to update the weights of w_h1_h2, SHAPE: (128, 512)
+        update_b_h1_h2 = self.b_h1_h2 - lr * error_2 # to update the biases of b_h1_h2, SHAPE: (128, 1)
 
         error_3 = np.transpose(self.w_h1_h2) @ error_2 * self.ReLU(fp_results['pre_result_i_h1'], derive=True) # SHAPE: (512, 1)
         update_w_i_h1 = self.w_i_h1 - lr * error_3 @ np.transpose(image) # to update the weights of w_i_h1, SHAPE: (512, 784)
+        update_b_i_h1 = self.b_i_h1 - lr * error_3 # to update the biases of b_i_h1, SHAPE (512, 1)
 
+        # dict to store the update values for later use
         update = {
             'update_w_h2_o': update_w_h2_o,
+            'update_b_h2_o': update_b_h2_o,
             'update_w_h1_h2': update_w_h1_h2,
-            'update_w_i_h1': update_w_i_h1
+            'update_b_h1_h2': update_b_h1_h2,
+            'update_w_i_h1': update_w_i_h1,
+            'update_b_i_h1': update_b_i_h1
         }
 
         return update 

@@ -12,6 +12,4 @@ nn = NeuralNetwork()
 
 results = nn.forward_propogate(img)
 update = nn.backward_propogation(results, lbl, 0.01, img)
-print(update['update_w_h2_o'].shape)
-print(update['update_w_h1_h2'].shape)
-print(update['update_w_i_h1'].shape)
+print(update['update_b_h2_o'])
