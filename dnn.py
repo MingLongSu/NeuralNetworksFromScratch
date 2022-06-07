@@ -107,5 +107,18 @@ class NeuralNetwork():
             print(f"Epoch { epoch + 1 } / { epochs }, Accuracy: { correct / self.train_images.shape[0] * 100 }%")
             correct = 0
 
+    def evaluate(self):
+        correct = 0
+
+        for image, label in zip(self.test_images, self.test_labels):
+            fp_results = self.forward_propogate(image)
+
+            if (np.argmax(fp_results['result_h2_o']) == np.argmax(label)):
+                correct = correct + 1
+
+        # status on accuracy
+        print(f"Accuracy: { correct / self.test_images.shape[0] * 100 }%")
+
 nn = NeuralNetwork()
 nn.train(lr=0.01, epochs=10)
+nn.evaluate()
