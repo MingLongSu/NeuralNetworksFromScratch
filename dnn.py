@@ -11,10 +11,10 @@ class NeuralNetwork():
         self.test_labels = test_labels
 
         # initialising weights and biases
-        self.w_i_h1 = np.random.uniform(-0.5, 0.5, (50, 28 * 28)) # weight 1
-        self.b_i_h1 = np.random.uniform(-0.5, 0.5, (50, 1)) # bias 1
+        self.w_i_h1 = np.random.uniform(-0.5, 0.5, (52, 28 * 28)) # weight 1 (512)
+        self.b_i_h1 = np.random.uniform(-0.5, 0.5, (52, 1)) # bias 1
 
-        self.w_h1_h2 = np.random.uniform(-0.5, 0.5, (20, 50)) # weight 2
+        self.w_h1_h2 = np.random.uniform(-0.5, 0.5, (20, 52)) # weight 2 (128)
         self.b_h1_h2 = np.random.uniform(-0.5, 0.5, (20, 1)) # bias 2
 
         self.w_h2_o = np.random.uniform(-0.5, 0.5, (10, 20)) # weight 3
