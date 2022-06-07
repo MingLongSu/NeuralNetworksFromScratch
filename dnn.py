@@ -11,13 +11,13 @@ class NeuralNetwork():
         self.test_labels = test_labels
 
         # initialising weights and biases
-        self.w_i_h1 = np.random.uniform(-0.5, 0.5, (512, 28 * 28)) # weight 1
-        self.b_i_h1 = np.random.uniform(-0.5, 0.5, (512, 1)) # bias 1
+        self.w_i_h1 = np.random.uniform(-0.5, 0.5, (50, 28 * 28)) # weight 1
+        self.b_i_h1 = np.random.uniform(-0.5, 0.5, (50, 1)) # bias 1
 
-        self.w_h1_h2 = np.random.uniform(-0.5, 0.5, (128, 512)) # weight 2
-        self.b_h1_h2 = np.random.uniform(-0.5, 0.5, (128, 1)) # bias 2
+        self.w_h1_h2 = np.random.uniform(-0.5, 0.5, (20, 50)) # weight 2
+        self.b_h1_h2 = np.random.uniform(-0.5, 0.5, (20, 1)) # bias 2
 
-        self.w_h2_o = np.random.uniform(-0.5, 0.5, (10, 128)) # weight 3
+        self.w_h2_o = np.random.uniform(-0.5, 0.5, (10, 20)) # weight 3
         self.b_h2_o = np.random.uniform(-0.5, 0.5, (10, 1)) # bias 3
 
     def ReLU(self, inp, derive=False):
@@ -68,7 +68,7 @@ class NeuralNetwork():
         update_b_i_h1 = self.b_i_h1 - lr * error_3 # to update the biases of b_i_h1, SHAPE (512, 1)
 
         # dict to store the update values for later use
-        update = {
+        updates = {
             'update_w_h2_o': update_w_h2_o,
             'update_b_h2_o': update_b_h2_o,
             'update_w_h1_h2': update_w_h1_h2,
@@ -77,4 +77,33 @@ class NeuralNetwork():
             'update_b_i_h1': update_b_i_h1
         }
 
-        return update 
+        return updates
+
+    def update_params(self, updates):
+        # updating the weights
+        self.w_i_h1 = updates['update_w_i_h1']
+        self.w_h1_h2 = updates['update_w_h1_h2']
+        self.w_h2_o = updates['update_w_h2_o']
+        
+        # updating the biases
+        self.b_i_h1 = updates['update_b_i_h1']
+        self.b_h1_h2 = updates['update_b_h1_h2']
+        self.b_h2_o = updates['update_b_h2_o']
+
+    def train(self, lr, epochs=1):
+        for epoch in range(epochs):
+            for image, label in zip(self.train_images, self.train_labels):
+                fp_results = self.forward_propogate(image)
+                updates = self.backward_propogation(fp_results=fp_results, train_label=label, lr=lr, image=image)
+                self.update_params(updates=updates)
+            
+            
+            #print(f"Epoch { epoch + 1 } / { epochs }, Accuracy: ")
+
+
+'''
+nn = NeuralNetwork()
+print(nn.b_h2_o)
+nn.train(lr=0.01, epochs=10)
+print(nn.b_h2_o)
+'''
