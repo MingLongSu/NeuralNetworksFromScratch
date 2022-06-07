@@ -34,4 +34,4 @@ class NeuralNetwork():
         pre_result_h2_o = self.w_h2_o @ result_h1_h2 + self.b_h2_o
         result_h2_o = self.Softmax(pre_result_h2_o) # SHAPE: (10, 1)
         
-        return result_h2_o
+        return (result_h2_o, pre_result_h2_o), (result_h1_h2, pre_result_h1_h2), (result_i_h1, pre_result_i_h1)
