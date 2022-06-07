@@ -1,7 +1,15 @@
 import numpy as np
+from fetch_data import fetch_mnist
 
 class NeuralNetwork():
     def __init__(self):
+        # fetching mnist data
+        (train_images, train_labels), (test_images, test_labels) = fetch_mnist()
+        self.train_images = train_images
+        self.train_labels = train_labels
+        self.test_images = test_images
+        self.test_labels = test_labels
+
         # initialising weights and biases
         self.w_i_h1 = np.random.uniform(-0.5, 0.5, (512, 28 * 28)) # weight 1
         self.b_i_h1 = np.random.uniform(-0.5, 0.5, (512, 1)) # bias 1
