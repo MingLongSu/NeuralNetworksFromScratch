@@ -19,6 +19,9 @@ def fetch_mnist():
     # One hot encoding the training label data
     train_labels = np.eye(10)[train_labels]
 
+    # Reshaping the train labels to appear like vectors
+    train_labels = np.reshape(train_labels, (train_labels.shape[0], 10, 1))
+
     return (train_images, train_labels), (test_images, test_labels)
 
 '''

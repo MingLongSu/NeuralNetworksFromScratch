@@ -33,5 +33,33 @@ class NeuralNetwork():
         # calculation for hidden 2 to output 
         pre_result_h2_o = self.w_h2_o @ result_h1_h2 + self.b_h2_o
         result_h2_o = self.Softmax(pre_result_h2_o) # SHAPE: (10, 1)
+
+        # storing all calculated results in a dict for easy referencing later
+        fp_results = { 
+            'pre_result_i_h1': pre_result_i_h1,
+            'result_i_h1': result_i_h1,
+            'pre_result_h1_h2': pre_result_h1_h2,
+            'result_h1_h2': result_h1_h2,
+            'pre_result_h2_o': pre_result_h2_o,
+            'result_h2_o': result_h2_o
+        }
         
-        return (result_h2_o, pre_result_h2_o), (result_h1_h2, pre_result_h1_h2), (result_i_h1, pre_result_i_h1)
+        return fp_results
+
+    def backward_propogation(self, fp_results, train_label, lr, image):
+        error_1 = (2 / len(fp_results['result_h2_o'])) * (fp_results['result_h2_o'] - train_label) # SHAPE: (10, 1)
+        update_w_h2_o = self.w_h2_o - lr * error_1 @ np.transpose(fp_results['result_h1_h2']) # to update the weights of w_h2_o, SHAPE: (10, 128)
+
+        error_2 = np.transpose(self.w_h2_o) @ error_1 * self.ReLU(fp_results['pre_result_h1_h2'], derive=True) # SHAPE: (128, 1)
+        update_w_h1_h2 = self.w_h1_h2 - lr * error_2 @ np.transpose(fp_results['result_i_h1']) # to update the weights of w_h1_h2, SHAPE: (128, 512)
+
+        error_3 = np.transpose(self.w_h1_h2) @ error_2 * self.ReLU(fp_results['pre_result_i_h1'], derive=True) # SHAPE: (512, 1)
+        update_w_i_h1 = self.w_i_h1 - lr * error_3 @ np.transpose(image) # to update the weights of w_i_h1, SHAPE: (512, 784)
+
+        update = {
+            'update_w_h2_o': update_w_h2_o,
+            'update_w_h1_h2': update_w_h1_h2,
+            'update_w_i_h1': update_w_i_h1
+        }
+
+        return update 
