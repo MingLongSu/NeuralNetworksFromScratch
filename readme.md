@@ -1,3 +1,3 @@
 # Neural Networks from Scratch
 
-This is where I will attempt at writing neural networks from scratch in Python to better my understanding of the mathematics underlying machine learning.
+Successfully developed a functioning deep neural network using pure Python for the MNIST dataset. Now currently working on a pure Python implementation of a CNN to further my understanding of machine learning. 
